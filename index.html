@@ -1,0 +1,38 @@
+<!-- 
+
+1 trace
+2 tone
+3 erase
+4 line
+5 drag
+
+click black
+shift-click white
+
+i invert
+x flip
+s export
+
+-->
+<!DOCTYPE html>
+<html lang="en">
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="moogle.js"></script>
+    <title>Moogle</title>
+  </head>
+  <body>
+    <script>
+      const cursor = { z: 0, a: { x: 0, y: 0 }, b: { x: 0, y: 0 }, w:640, h:480 }
+      const moogle = new Moogle(cursor)
+      moogle.install(document.body)
+      moogle.start()
+    </script>
+    <style>
+      * { margin:0;padding:0;border:0;outline:0 }
+      body { overflow: hidden; }
+    </style>
+  </body>
+</html>
