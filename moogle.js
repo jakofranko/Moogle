@@ -19,7 +19,7 @@ function Moogle () {
     window.addEventListener('dragover', this.onDrag, false)
     window.addEventListener('drop', this.onDrop, false)
     window.addEventListener('paste', this.onPaste, false)
-
+    this.context.strokeStyle = 'black'
     this.fit()
   }
 
@@ -43,13 +43,28 @@ function Moogle () {
     this.context.restore()
   }
 
-  this.update = () => {
+  this.fix = () => {
+    if (cursor.b.y < cursor.a.y) {
+      const o = cursor.a.y
+      cursor.a.y = cursor.b.y
+      cursor.b.y = o
+    }
+    if (cursor.b.x < cursor.a.x) {
+      const o = cursor.a.x
+      cursor.a.x = cursor.b.x
+      cursor.b.x = o
+    }
+  }
+
+  this.update = (selection = true) => {
     this.fill()
     if (this.cache) {
       this.context.drawImage(this.cache, 0, 0)
     }
-    this.context.strokeStyle = 'red'
-    this.context.strokeRect(cursor.a.x, cursor.a.y, cursor.b.x - cursor.a.x, cursor.b.y - cursor.a.y)
+    if (selection === true) {
+      this.guide()
+    }
+    document.title = `moogle(${cursor.b.x - cursor.a.x}x${cursor.b.y - cursor.a.y})`
   }
 
   this.draw = (file) => {
@@ -62,6 +77,38 @@ function Moogle () {
       this.update()
     }
     img.src = URL.createObjectURL(file)
+  }
+
+  this.guide = () => {
+    const center = parseInt(cursor.a.x + ((cursor.b.x - cursor.a.x) / 2))
+    const middle = parseInt(cursor.a.y + ((cursor.b.y - cursor.a.y) / 2))
+    this.context.save()
+    this.context.beginPath()
+    this.context.setLineDash([1, 1])
+    this.context.moveTo(cursor.a.x - 0.5, 0)
+    this.context.lineTo(cursor.a.x - 0.5, window.innerHeight)
+    this.context.moveTo(cursor.b.x - 0.5, 0)
+    this.context.lineTo(cursor.b.x - 0.5, window.innerHeight)
+    this.context.moveTo(0, cursor.a.y - 0.5)
+    this.context.lineTo(window.innerWidth, cursor.a.y - 0.5)
+    this.context.moveTo(0, cursor.b.y - 0.5)
+    this.context.lineTo(window.innerWidth, cursor.b.y - 0.5)
+    this.context.moveTo(center - 0.5, middle - 5)
+    this.context.lineTo(center - 0.5, middle + 5)
+    this.context.moveTo(center - 5, middle - 0.5)
+    this.context.lineTo(center + 5, middle - 0.5)
+    this.context.stroke()
+    this.context.restore()
+  }
+
+  this.crop = (w, h) => {
+    const canvas = document.createElement('canvas')
+    canvas.width = w
+    canvas.height = h
+    const context = canvas.getContext('2d')
+    context.drawImage(this.el, cursor.a.x, cursor.a.y, w, h, 0, 0, w, h)
+    this.update()
+    return canvas
   }
 
   // Events
@@ -86,6 +133,7 @@ function Moogle () {
     cursor.z = 0
     cursor.b.x = e.clientX
     cursor.b.y = e.clientY
+    this.fix()
     this.update()
     e.preventDefault()
   }
@@ -95,7 +143,16 @@ function Moogle () {
   }
 
   this.onKeyUp = (e) => {
-
+    if (e.key === 's') {
+      this.update(false)
+      const crop = this.crop(cursor.b.x - cursor.a.x, cursor.b.y - cursor.a.y)
+      grab(crop.toDataURL('image/png'), 'export.png')
+    }
+    if (e.key === 'e') {
+      this.update(false)
+      const crop = this.crop(cursor.b.x - cursor.a.x, cursor.b.y - cursor.a.y)
+      grab(crop.toDataURL('image/jpeg'), 'export.jpg')
+    }
   }
 
   this.onDrop = (e) => {
@@ -127,9 +184,5 @@ function Moogle () {
     link.setAttribute('href', base64)
     link.setAttribute('download', name)
     link.dispatchEvent(new MouseEvent(`click`, { bubbles: true, cancelable: true, view: window }))
-  }
-
-  function step (val, len) {
-    return parseInt(val / len) * len
   }
 }

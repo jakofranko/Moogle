@@ -6,7 +6,8 @@ We could not find a decent webpage to quickly crop an image, so here's one.
 
 ## Controls
 
-WIP..
+- `s` jpg.
+- `e` png.
 
 ## Small, Sharp Tools
 
