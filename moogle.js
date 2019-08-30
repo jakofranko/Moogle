@@ -111,6 +111,14 @@ function Moogle () {
     return canvas
   }
 
+  this.select = (x,y,w,h) => {
+    cursor.a.x = x
+    cursor.a.y = y
+    cursor.b.x = cursor.a.x + w
+    cursor.b.y = cursor.a.y + h
+    this.update()
+  }
+
   // Events
 
   this.onMouseDown = (e) => {
