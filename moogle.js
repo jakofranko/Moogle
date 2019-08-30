@@ -54,6 +54,12 @@ function Moogle () {
       cursor.a.x = cursor.b.x
       cursor.b.x = o
     }
+    if (cursor.b.x - cursor.a.x < 5) {
+      cursor.a.x = 0
+    }
+    if (cursor.b.y - cursor.a.y < 5) {
+      cursor.a.y = 0
+    }
   }
 
   this.update = (selection = true) => {
@@ -111,11 +117,11 @@ function Moogle () {
     return canvas
   }
 
-  this.select = (x,y,w,h) => {
+  this.select = (x, y, w, h) => {
     cursor.a.x = x
     cursor.a.y = y
-    cursor.b.x = cursor.a.x + w
-    cursor.b.y = cursor.a.y + h
+    cursor.b.x = x + w
+    cursor.b.y = y + h
     this.update()
   }
 
