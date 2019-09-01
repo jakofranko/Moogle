@@ -112,7 +112,7 @@ function Moogle () {
     canvas.width = w
     canvas.height = h
     const context = canvas.getContext('2d')
-    context.drawImage(this.el, cursor.a.x, cursor.a.y, w, h, 0, 0, w, h)
+    context.drawImage(this.cache, cursor.a.x, cursor.a.y, w, h, 0, 0, w, h)
     this.update()
     return canvas
   }
