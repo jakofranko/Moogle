@@ -13,7 +13,9 @@ We could not find a decent webpage to quickly crop an image, so here's one.
 - `s` jpg.
 - `e` png.
 
-## Small, Sharp Tools
 
-- [Noodle](https://github.com/hundredrabbits/noodle), sketch tool.
-- [Moogle](https://github.com/hundredrabbits/moogle), crop tool.
+## Ecosystem
+
+- [Poodle](https://hundredrabbits.github.io/Poodle/), scene
+- [Noodle](https://hundredrabbits.github.io/Noodle/), sketch
+- [Moogle](https://hundredrabbits.github.io/Moogle/), crop
